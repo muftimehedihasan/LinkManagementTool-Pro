@@ -10,7 +10,8 @@ class LinkController extends Controller
 {
     public function index()
     {
-        $links = Link::where('user_id', Auth::id())->get();
+        // Paginate the links with 10 items per page
+        $links = Link::paginate(5);
         return view('dashboard', compact('links'));
     }
 
@@ -36,27 +37,32 @@ class LinkController extends Controller
 
     public function edit(Link $link)
     {
-        $this->authorize('update', $link);
+        // Directly return the edit view with the link data
         return view('links.edit', compact('link'));
     }
 
     public function update(Request $request, Link $link)
     {
-        $this->authorize('update', $link);
-
+        // Validate the incoming request
         $request->validate(['original_url' => 'required|url']);
+
+        // Update the link's original URL
         $link->update(['original_url' => $request->original_url]);
 
+        // Redirect back to the index page with a success message
         return redirect()->route('links.index')->with('success', 'Link updated successfully!');
     }
 
+
     public function destroy(Link $link)
     {
-        $this->authorize('delete', $link);
+        // Delete the link
         $link->delete();
 
-        return redirect()->route('links.index')->with('success', 'Link deleted successfully!');
+        // Return a JSON response with success status
+        return response()->json(['success' => true]);
     }
+
 
     public function redirect($short_url)
     {

@@ -12,7 +12,8 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
 
-    $links = Link::where('user_id', Auth::id())->get();
+    // $links = Link::where('user_id', Auth::id())->get();
+    $links = Link::paginate(5); // Adjust per page count as needed
     return view('dashboard', compact('links'));
 
     // return view('dashboard');

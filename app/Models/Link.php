@@ -14,4 +14,6 @@ class Link extends Model
         return $this->belongsTo(User::class);
     }
 
+    
+
 }
