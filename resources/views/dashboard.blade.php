@@ -54,8 +54,8 @@
         </div>
       </nav>
 
-      <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
-         <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+      <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-50 h-screen pt-20 transition-transform -translate-x-full bg-orange-100 border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
+         <div class="h-full px-3 pb-4 overflow-y-auto bg-orange-100 dark:bg-gray-800">
             <ul class="space-y-2 font-medium">
                <li>
                   <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -96,13 +96,13 @@
          </div>
       </aside>
 
-      <div class="p-4 sm:ml-64">
-         <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-2">
+      <div class="p-2 sm:ml-40">
+         <div class=" ">
 
 
 
 {{-- ///////////////////////////////////////////////////// --}}
-            <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
+            <section class="bg-white dark:bg-gray-900 p-3 sm:p-5">
                 <div class="mx-auto max-w-screen-xl px-4 lg:px-2">
                     <!-- Start coding here -->
                     <div class="">
@@ -197,6 +197,12 @@
 
 
                                 </div>
+
+
+
+
+
+
                             </div>
                         </div>
 
@@ -214,36 +220,6 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                {{-- <tbody>
-                                    @foreach($links as $link)
-                                    <tr class="border-b dark:border-gray-700">
-                                        <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"> <a href="{{ url($link->short_url) }}" target="_blank">{{ url($link->short_url) }}</a></th>
-                                        <td class="px-4 py-3">{{ $link->original_url }}</td>
-                                        <td class="px-4 py-3">{{ $link->created_at->diffForHumans() }}</td>
-                                        <td class="px-4 py-3">{{ $link->click_count }}</td>
-                                        <td class="px-4 py-3 flex items-center justify-end">
-                                            <button id="apple-imac-27-dropdown-button" data-dropdown-toggle="apple-imac-27-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
-                                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                                </svg>
-                                            </button>
-                                            <div id="apple-imac-27-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="apple-imac-27-dropdown-button">
-                                                    <li>
-                                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
-                                                    </li>
-                                                </ul>
-                                                <div class="py-1">
-                                                    <a href="#" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody> --}}
 
                                 <tbody>
                                     @foreach($links as $link)
@@ -362,6 +338,11 @@
         });
     });
 });
+
+
+// Function to handle the create action
+
+
 
 // Function to handle the delete action
 function deleteLink(linkId) {
