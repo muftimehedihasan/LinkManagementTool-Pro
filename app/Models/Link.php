@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Link extends Model
 {
-    protected $fillable = ['user_id', 'original_url', 'short_url'];
+    protected $fillable = ['user_id', 'destination_url', 'short_url', 'tags', 'click_count'];
 
 
     public function user()
@@ -14,6 +14,6 @@ class Link extends Model
         return $this->belongsTo(User::class);
     }
 
-    
+
 
 }

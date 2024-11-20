@@ -5,6 +5,7 @@ use App\Models\Link;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class LinkController extends Controller
 {
@@ -20,20 +21,31 @@ class LinkController extends Controller
         return view('links.create');
     }
 
+
+
+    // Method for Stor Data
+
     public function store(Request $request)
     {
-        $request->validate(['original_url' => 'required|url']);
+        $validatedData = $request->validate([
+            'destination_url' => 'required|url',
+            'custom_url' => 'nullable|string|unique:links,short_url',
+            'tags' => 'nullable|string',
+        ]);
 
-        $shortUrl = Str::random(6); // Generate a 6-character unique code
-
-        Link::create([
-            'original_url' => $request->original_url,
-            'short_url' => $shortUrl,
+        $link = Link::create([
+            'destination_url' => $validatedData['destination_url'],
+            'short_url' => $validatedData['custom_url'] ?? substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 8),
+            'tags' => $validatedData['tags'],
             'user_id' => Auth::id(),
         ]);
 
-        return redirect()->route('links.index')->with('success', 'Short link created successfully!');
+        return redirect()->route('links.index')->with('success', 'Link created successfully!');
     }
+
+
+
+
 
     public function edit(Link $link)
     {
@@ -64,11 +76,21 @@ class LinkController extends Controller
     }
 
 
+
     public function redirect($short_url)
     {
         $link = Link::where('short_url', $short_url)->firstOrFail();
+
+        // Log the destination URL for debugging
+        Log::info('Redirecting to URL: ' . $link->destination_url);
+
+        // Increment the click count
         $link->increment('click_count');
 
-        return redirect($link->original_url);
+        // Redirect to the destination URL
+        return redirect()->to($link->destination_url);
     }
+
+
+
 }

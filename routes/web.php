@@ -12,7 +12,6 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
 
-    // $links = Link::where('user_id', Auth::id())->get();
     $links = Link::paginate(5); // Adjust per page count as needed
     return view('dashboard', compact('links'));
 
@@ -29,7 +28,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('links', LinkController::class);
 });
 
-//Route::get('/{short_url}', [LinkController::class, 'redirect'])->name('links.redirect');
+Route::get('/{short_url}', [LinkController::class, 'redirect'])->name('links.redirect');
+
 
 
 require __DIR__.'/auth.php';
