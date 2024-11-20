@@ -13,10 +13,12 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-white dark:bg-gray-900">
+        <div class="min-h-screen bg-orange-50 dark:bg-gray-900">
             @include('layouts.navigation')
+
 
             <!-- Page Heading -->
             @isset($header)
