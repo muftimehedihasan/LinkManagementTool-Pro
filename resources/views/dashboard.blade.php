@@ -31,7 +31,7 @@
 
             {{-- ///////////////////// --}}
         <!-- Start coding here -->
-        <div class="bg-orange-50 dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
+<div class="bg-orange-50 dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
             <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 py-4">
                 <div class="w-full md:w-1/2">
                     <form class="flex items-center">
@@ -54,102 +54,63 @@
 
 
 <!-- Modal toggle -->
-<button data-modal-target="default-modal" data-modal-toggle="default-modal" class="block text-white bg-gray-600 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-    Create link
-  </button>
+<!-- Modal Trigger -->
+<button data-modal-target="default-modal" data-modal-toggle="default-modal"
+    class="block text-white bg-gray-600 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+    Create Link
+</button>
 
-  <!-- Main modal -->
-  <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-      <div class="relative p-4 w-full max-w-2xl max-h-full">
-          <!-- Modal content -->
-          <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+<!-- Modal -->
+<div id="default-modal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
 
-              <!-- Modal body -->
-              <div class="p-4 md:p-5 space-y-4">
-
-                <form action="{{ route('links.store') }}" method="POST" class="space-y-6">
+            <!-- Modal Body -->
+            <div class="p-4 md:p-5 space-y-4">
+                <form id="linkForm" class="space-y-6">
                     @csrf
 
-                    <!-- All Errors at Top -->
-                    @if ($errors->any())
-                        <div class="p-4 mb-4 text-sm text-red-800 bg-red-50 border border-red-200 rounded-lg" role="alert">
-                            <strong class="font-medium">Whoops! Something went wrong:</strong>
-                            <ul class="mt-0 list-disc list-inside">
-                                @foreach ($errors->all() as $error)
-                                    {{-- <li>{{ $error }}</li> --}}
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+                    <!-- Error Container -->
+                    <div id="errorContainer" class="hidden p-4 text-sm text-red-800 bg-red-50 border border-red-200 rounded-lg"></div>
+
+                    <!-- Success Message -->
+                    <div id="successContainer" class="hidden p-4 text-sm text-green-800 bg-green-50 border border-green-200 rounded-lg"></div>
 
                     <!-- Destination URL Field -->
                     <div class="mb-6">
-                        <label
-                            for="destination_url"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Destination URL
-                        </label>
-                        <input
-                            type="url"
-                            name="destination_url"
-                            id="destination_url"
-                            value="{{ old('destination_url') }}"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('destination_url') border-red-500 @enderror"
-                            placeholder="https://example.com"
-                            required>
-                        @error('destination_url')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
+                        <label for="destination_url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Destination URL</label>
+                        <input type="url" name="destination_url" id="destination_url"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="https://example.com" required>
                     </div>
 
                     <!-- Custom URL Field -->
                     <div class="mb-6">
-                        <label
-                            for="custom_url"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Custom URL (Optional)
-                        </label>
-                        <input
-                            type="text"
-                            name="custom_url"
-                            id="custom_url"
-                            value="{{ old('custom_url') }}"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('custom_url') border-red-500 @enderror"
+                        <label for="custom_url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Custom URL (Optional)</label>
+                        <input type="text" name="custom_url" id="custom_url"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Enter a custom short URL">
-                        @error('custom_url')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
                     </div>
 
                     <!-- Tags Field -->
                     <div class="mb-6">
-                        <label
-                            for="tags"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Tags (Optional)
-                        </label>
-                        <input
-                            type="text"
-                            name="tags"
-                            id="tags"
-                            value="{{ old('tags') }}"
+                        <label for="tags" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tags (Optional)</label>
+                        <input type="text" name="tags" id="tags"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="e.g., technology, tools">
                     </div>
 
                     <!-- Submit Button -->
-                    <button
-                        type="submit"
+                    <button type="submit"
                         class="w-full sm:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Submit
                     </button>
                 </form>
-
-
-              </div>
-          </div>
-      </div>
+            </div>
+        </div>
     </div>
+</div>
 
 
 
@@ -379,4 +340,60 @@ function editLink(linkId) {
 }
 
 
+document.getElementById('linkForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const errorContainer = document.getElementById('errorContainer');
+    const successContainer = document.getElementById('successContainer');
+
+    // Clear previous messages
+    errorContainer.classList.add('hidden');
+    successContainer.classList.add('hidden');
+    errorContainer.innerHTML = '';
+    successContainer.innerHTML = '';
+
+    fetch("{{ route('links.store') }}", {
+        method: "POST",
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('input[name=_token]').value,
+            'Accept': 'application/json',
+        },
+        body: formData,
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => {
+                    throw err;
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Display success message
+            successContainer.classList.remove('hidden');
+            successContainer.innerHTML = `<p>${data.message}</p>`;
+            document.getElementById('linkForm').reset();
+        })
+        .catch(error => {
+            // Display error messages
+            errorContainer.classList.remove('hidden');
+            if (error.errors) {
+                Object.values(error.errors).forEach(err => {
+                    errorContainer.innerHTML += `<p>${err}</p>`;
+                });
+            } else {
+                errorContainer.innerHTML = `<p>${error.error || 'Something went wrong.'}</p>`;
+            }
+        });
+});
+
+
+
 </script>
+
+
+
+
+
+
