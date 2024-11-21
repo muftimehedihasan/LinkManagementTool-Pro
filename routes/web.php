@@ -29,7 +29,12 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/{short_url}', [LinkController::class, 'redirect'])->name('links.redirect');
+
 // Route::get('/original/{short_url}', [LinkController::class, 'redirect'])->name('links.redirect');
+// Route::prefix('original')->group(function () {
+//     Route::get('/{short_url}', [LinkController::class, 'redirect'])->name('links.redirect');
+// });
+
 
 
 
