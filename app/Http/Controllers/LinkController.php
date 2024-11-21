@@ -28,10 +28,13 @@ class LinkController extends Controller
 
     public function store(Request $request)
     {
+
         $validatedData = $request->validate([
             'destination_url' => 'required|url',
             'custom_url' => 'nullable|string|unique:links,short_url',
             'tags' => 'nullable|string',
+        ], [
+            'custom_url.unique' => 'The custom URL is already in use. Please choose a different one.',
         ]);
 
         $link = Link::create([

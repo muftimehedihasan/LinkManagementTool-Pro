@@ -10,6 +10,26 @@
 
     <section class="bg-orange-50 dark:bg-gray-900 p-3 sm:p-5">
     <div class="mx-auto max-w-screen-xl px-4 py-16 lg:px-12">
+
+                    {{-- /////////////////// --}}
+
+ {{-- Success Message --}}
+ @if (session('success'))
+ <div class="mb-4 flex items-center rounded-lg border border-green-300 bg-green-50 p-4 text-sm text-green-800 dark:border-green-800 dark:bg-gray-800 dark:text-green-400"
+     role="alert">
+     <svg class="me-3 inline h-4 w-4 flex-shrink-0" aria-hidden="true"
+         xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+         <path
+             d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+     </svg>
+     <span class="sr-only">Success</span>
+     <div>
+         <span class="font-medium">Success!</span> {{ session('success') }}
+     </div>
+ </div>
+@endif
+
+            {{-- ///////////////////// --}}
         <!-- Start coding here -->
         <div class="bg-orange-50 dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
             <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 py-4">
@@ -47,30 +67,89 @@
               <!-- Modal body -->
               <div class="p-4 md:p-5 space-y-4">
 
-<form action="{{ route('links.store') }}" method="POST">
-    @csrf
-    <div class="mb-6">
-        <label for="destination_url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Destination URL</label>
-        <input type="url" name="destination_url" id="destination_url" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="https://example.com" required>
-    </div>
-    <div class="mb-6">
-        <label for="custom_url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Custom URL</label>
-        <input type="text" name="custom_url" id="custom_url" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="short-url">
-    </div>
-    <div class="mb-6">
-        <label for="tags" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tags</label>
-        <input type="text" name="tags" id="tags" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g., technology, tools">
-    </div>
+                <form action="{{ route('links.store') }}" method="POST" class="space-y-6">
+                    @csrf
 
-    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-</form>
+                    <!-- All Errors at Top -->
+                    @if ($errors->any())
+                        <div class="p-4 mb-4 text-sm text-red-800 bg-red-50 border border-red-200 rounded-lg" role="alert">
+                            <strong class="font-medium">Whoops! Something went wrong:</strong>
+                            <ul class="mt-0 list-disc list-inside">
+                                @foreach ($errors->all() as $error)
+                                    {{-- <li>{{ $error }}</li> --}}
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <!-- Destination URL Field -->
+                    <div class="mb-6">
+                        <label
+                            for="destination_url"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Destination URL
+                        </label>
+                        <input
+                            type="url"
+                            name="destination_url"
+                            id="destination_url"
+                            value="{{ old('destination_url') }}"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('destination_url') border-red-500 @enderror"
+                            placeholder="https://example.com"
+                            required>
+                        @error('destination_url')
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Custom URL Field -->
+                    <div class="mb-6">
+                        <label
+                            for="custom_url"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Custom URL (Optional)
+                        </label>
+                        <input
+                            type="text"
+                            name="custom_url"
+                            id="custom_url"
+                            value="{{ old('custom_url') }}"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('custom_url') border-red-500 @enderror"
+                            placeholder="Enter a custom short URL">
+                        @error('custom_url')
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Tags Field -->
+                    <div class="mb-6">
+                        <label
+                            for="tags"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Tags (Optional)
+                        </label>
+                        <input
+                            type="text"
+                            name="tags"
+                            id="tags"
+                            value="{{ old('tags') }}"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="e.g., technology, tools">
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button
+                        type="submit"
+                        class="w-full sm:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Submit
+                    </button>
+                </form>
 
 
               </div>
-
           </div>
       </div>
-  </div>
+    </div>
 
 
 
@@ -162,12 +241,15 @@
                                 <div id="{{ $link->short_url }}-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                     <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="{{ $link->short_url }}-button">
                                         <!-- Show Action -->
-                                        <li>
+                                        {{-- <li>
                                             <a href="{{ route('links.show', $link->id) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
-                                        </li>
+                                        </li> --}}
                                         <!-- Edit Action -->
                                         <li>
-                                            <a href="{{ route('links.edit', $link->id) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                        <!-- Modal toggle -->
+                                        <a href="#" data-modal-target="edit-modal" data-modal-toggle="edit-modal" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" type="button">
+                                            Edit
+                                        </a>
                                         </li>
                                     </ul>
                                     <!-- Delete Action -->
@@ -184,6 +266,11 @@
                 </table>
             </div>
 
+
+    <!-- Edit Main modal -->
+    @include('links.edit')
+
+
             <!-- Pagination Links -->
             <div class="p-4">
                 {{ $links->links('pagination::tailwind') }}
@@ -193,15 +280,8 @@
     </div>
     </section>
 
-
-
-
-         </div>
-      </div>
-
-
-
-
+        </div>
+    </div>
 
 </x-app-layout>
 
@@ -297,13 +377,6 @@ function editLink(linkId) {
     // Redirect to the edit page for this link (assuming you have an edit route)
     window.location.href = `/links/${linkId}/edit`;
 }
-
-// Function to handle the show action
-function showLink(linkId) {
-    // Redirect to show the link details (this could be a page showing full details of the link)
-    window.location.href = `/links/${linkId}`;
-}
-
 
 
 </script>
