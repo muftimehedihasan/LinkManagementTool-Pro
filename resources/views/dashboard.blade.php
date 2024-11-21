@@ -33,25 +33,22 @@
         <!-- Start coding here -->
 <div class="bg-orange-50 dark:bg-gray-800 relative sm:rounded-lg overflow-hidden">
             <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 py-4">
+
                 <div class="w-full md:w-1/2">
-                    <form class="flex items-center">
+                    <form action="{{ route('links.search') }}" method="GET" class="flex items-center">
                         <label for="simple-search" class="sr-only">Search</label>
                         <div class="relative w-full">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required="">
+                            <input type="text" name="query" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search (URL, Tags, Time)" value="{{ request('query') }}" required>
                         </div>
                     </form>
                 </div>
+
                 <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-
-
-
-
-
 
 <!-- Modal toggle -->
 <!-- Modal Trigger -->
@@ -61,57 +58,7 @@
 </button>
 
 <!-- Modal -->
-<div id="default-modal" tabindex="-1" aria-hidden="true"
-    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-2xl max-h-full">
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-
-            <!-- Modal Body -->
-            <div class="p-4 md:p-5 space-y-4">
-                <form id="linkForm" class="space-y-6">
-                    @csrf
-
-                    <!-- Error Container -->
-                    <div id="errorContainer" class="hidden p-4 text-sm text-red-800 bg-red-50 border border-red-200 rounded-lg"></div>
-
-                    <!-- Success Message -->
-                    <div id="successContainer" class="hidden p-4 text-sm text-green-800 bg-green-50 border border-green-200 rounded-lg"></div>
-
-                    <!-- Destination URL Field -->
-                    <div class="mb-6">
-                        <label for="destination_url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Destination URL</label>
-                        <input type="url" name="destination_url" id="destination_url"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="https://example.com" required>
-                    </div>
-
-                    <!-- Custom URL Field -->
-                    <div class="mb-6">
-                        <label for="custom_url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Custom URL (Optional)</label>
-                        <input type="text" name="custom_url" id="custom_url"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Enter a custom short URL">
-                    </div>
-
-                    <!-- Tags Field -->
-                    <div class="mb-6">
-                        <label for="tags" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tags (Optional)</label>
-                        <input type="text" name="tags" id="tags"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="e.g., technology, tools">
-                    </div>
-
-                    <!-- Submit Button -->
-                    <button type="submit"
-                        class="w-full sm:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        Submit
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
+@include('create-mode')
 
 
                     <div class="flex items-center space-x-3 w-full md:w-auto">
@@ -122,11 +69,11 @@
                             Actions
                         </button>
                         <div id="actionsDropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                            <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
+                            {{-- <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
                                 <li>
                                     <a href="#" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Mass Edit</a>
                                 </li>
-                            </ul>
+                            </ul> --}}
                             <div class="py-1">
                                 <a href="#" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete all</a>
                             </div>
@@ -202,13 +149,13 @@
                                 <div id="{{ $link->short_url }}-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                     <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="{{ $link->short_url }}-button">
                                         <!-- Show Action -->
-                                        {{-- <li>
+                                        <li>
                                             <a href="{{ route('links.show', $link->id) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
-                                        </li> --}}
+                                        </li>
                                         <!-- Edit Action -->
                                         <li>
                                         <!-- Modal toggle -->
-                                        <a href="#" data-modal-target="edit-modal" data-modal-toggle="edit-modal" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" type="button">
+                                        <a href="{{ route('links.edit', $link->id) }}" data-modal-target="edit-modal" data-modal-toggle="edit-modal" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                             Edit
                                         </a>
                                         </li>
@@ -224,6 +171,8 @@
 
                         @endforeach
                     </tbody>
+
+
                 </table>
             </div>
 

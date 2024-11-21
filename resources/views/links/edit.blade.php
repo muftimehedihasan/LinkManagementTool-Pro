@@ -1,4 +1,4 @@
-<div id="edit-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+{{-- <div id="edit-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -29,4 +29,54 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
+
+
+
+
+
+        {{-- <form action="{{ route('links.update', $link->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+
+            <div class="mb-3">
+                <label for="destination_url" class="form-label">Destination URL</label>
+                <input
+                    type="url"
+                    id="destination_url"
+                    name="destination_url"
+                    class="form-control"
+                    value="{{ old('destination_url', $link->destination_url) }}"
+                    required
+                >
+            </div>
+
+            <div class="mb-3">
+                <label for="custom_url" class="form-label">Custom URL</label>
+                <input
+                    type="text"
+                    id="custom_url"
+                    name="custom_url"
+                    class="form-control"
+                    value="{{ old('custom_url', $link->short_url) }}"
+                >
+                <small class="form-text text-muted">Optional: Provide a custom short URL.</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="tags" class="form-label">Tags</label>
+                <input
+                    type="text"
+                    id="tags"
+                    name="tags"
+                    class="form-control"
+                    value="{{ old('tags', $link->tags) }}"
+                >
+                <small class="form-text text-muted">Optional: Add tags separated by commas.</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Link</button>
+            {{-- <a href="{{ route('dashboard') }}" class="btn btn-secondary">Cancel</a> --}}
+        {{-- </form>
+    </div> --}}
+

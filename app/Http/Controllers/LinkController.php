@@ -8,6 +8,20 @@ use Illuminate\Support\Facades\Auth;
 
 class LinkController extends Controller
 {
+
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Perform search using Scout/Meilisearch
+        $links = Link::search($query)->paginate(5);
+
+        return view('dashboard', compact('links', 'query'));
+    }
+
+
+
     /**
      * Display a listing of the user's links.
      */
@@ -61,29 +75,63 @@ class LinkController extends Controller
             ->with('success', 'Link created successfully!');
     }
 
-    public function edit(Link $link)
+
+
+
+    public function show($id)
+{
+    $link = Link::findOrFail($id); // Retrieve the link by ID
+
+    // Return the link details as JSON
+    return response()->json([
+        'success' => true,
+        'data' => $link,
+        'message' => 'Link retrieved successfully!',
+    ], 200);
+}
+
+
+
+
+    public function edit($id)
     {
-        // Directly return the edit view with the link data
+        // Retrieve the link by ID
+        // dd($id);
+        // Find the Link model by ID
+        $link = Link::findOrFail($id);
+
+        // Pass the retrieved Link model to the view
         return view('links.edit', compact('link'));
     }
 
     public function update(Request $request, $id)
     {
+        // dd($id);
+        // Validate the request inputs
         $request->validate([
             'destination_url' => 'required|url',
             'custom_url' => 'nullable|string|max:255',
             'tags' => 'nullable|string|max:255',
         ]);
 
+        // Find the Link model by ID
         $link = Link::findOrFail($id);
+
+        // Update the link's properties
         $link->destination_url = $request->destination_url;
-        $link->short_url = $request->custom_url ?? $link->short_url; // Update if provided
+        $link->short_url = $request->custom_url ?? $link->short_url; // Use provided custom URL or keep existing
         $link->tags = $request->tags;
+
+        // Save the updated link to the database
         $link->save();
 
+        // Redirect to the dashboard with a success message
         return redirect()->route('dashboard')->with('success', 'Link updated successfully!');
-        // return redirect()->back()->with('success', 'Link updated successfully!');
     }
+
+
+
+
 
     /**
      * Remove the specified link from storage.
@@ -96,5 +144,15 @@ class LinkController extends Controller
         // Return a JSON response with success status
         return response()->json(['success' => true]);
     }
+
+    public function deleteAll()
+{
+    // Delete all links for the authenticated user
+    Link::where('user_id', Auth::id())->delete();
+
+    // Redirect back with a success message
+    return redirect()->route('dashboard')->with('success', 'All links have been deleted.');
+}
+
 
 }

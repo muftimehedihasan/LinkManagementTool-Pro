@@ -27,6 +27,14 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('links', LinkController::class);
 });
 
+Route::get('/search', [LinkController::class, 'search'])->name('links.search');
+
+
+
+
+Route::delete('/links/delete-all', [LinkController::class, 'deleteAll'])->name('links.deleteAll')->middleware(['auth', 'verified']);
+
+
 // Route::get('/{short_url}', [LinkController::class, 'redirect'])->name('links.redirect');
 
 // Route::get('/original/{short_url}', [LinkController::class, 'redirect'])->name('links.redirect');
