@@ -11,11 +11,10 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
+    // Fetch links that belong to the authenticated user
+    $links = Link::where('user_id', Auth::id())->orderBy('created_at', 'desc')->paginate(5);
 
-    $links = Link::orderBy('created_at', 'desc')->paginate(5);
     return view('dashboard', compact('links'));
-
-    // return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -28,7 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('links', LinkController::class);
 });
 
-Route::get('/{short_url}', [LinkController::class, 'redirect'])->name('links.redirect');
+// Route::get('/{short_url}', [LinkController::class, 'redirect'])->name('links.redirect');
 
 // Route::get('/original/{short_url}', [LinkController::class, 'redirect'])->name('links.redirect');
 // Route::prefix('original')->group(function () {
