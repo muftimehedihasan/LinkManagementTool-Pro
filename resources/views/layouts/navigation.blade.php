@@ -178,7 +178,7 @@
                 <div class="relative">
                     <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" @click="open = !open">
                         <span class="sr-only">Open user menu</span>
-                        <img class="w-8 h-8 rounded-full" src="https://images.pexels.com/photos/189349/pexels-photo-189349.jpeg?auto=compress&cs=tinysrgb&w=600" alt="user photo">
+                        <img class="w-8 h-8 rounded-full" src="https://img.freepik.com/premium-photo/cartoon-character-with-hoodie-that-says-i-m-kid_784625-10918.jpg?uid=R58847718&ga=GA1.1.919060130.1730624569&semt=ais_hybrid" alt="user photo">
                     </button>
                     <div x-show="open" @click.away="open = false" class="absolute right-0 z-50 mt-2 w-48 bg-white rounded-md shadow-lg dark:bg-gray-700">
                         <div class="px-4 py-3">

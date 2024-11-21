@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Link;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 class LinkController extends Controller
@@ -145,14 +146,39 @@ class LinkController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function deleteAll()
-{
-    // Delete all links for the authenticated user
-    Link::where('user_id', Auth::id())->delete();
+    public function redirect($short_url)
+    {
+        $link = Link::where('short_url', $short_url)->firstOrFail();
 
-    // Redirect back with a success message
-    return redirect()->route('dashboard')->with('success', 'All links have been deleted.');
-}
+        // Log the destination URL for debugging
+        Log::info('Redirecting to URL: ' . $link->destination_url);
+
+        // Increment the click count
+        $link->increment('click_count');
+
+        // Redirect to the destination URL
+        return redirect()->to($link->destination_url);
+    }
+
+
+
+    // public function redirect($short_url)
+    // {
+    //     // Remove the prefix from the short URL
+    //     $cleaned_short_url = str_replace('original-', '', $short_url);
+
+    //     // Find the link in the database
+    //     $link = Link::where('short_url', $cleaned_short_url)->firstOrFail();
+
+    //     // Log the destination URL for debugging
+    //     Log::info('Redirecting to URL: ' . $link->destination_url);
+
+    //     // Increment the click count
+    //     $link->increment('click_count');
+
+    //     // Redirect to the destination URL
+    //     return redirect()->to($link->destination_url);
+    // }
 
 
 }

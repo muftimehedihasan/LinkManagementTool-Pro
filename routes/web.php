@@ -35,6 +35,14 @@ Route::get('/search', [LinkController::class, 'search'])->name('links.search');
 Route::delete('/links/delete-all', [LinkController::class, 'deleteAll'])->name('links.deleteAll')->middleware(['auth', 'verified']);
 
 
+// Route::prefix('s')->group(function () {
+//     Route::get('/{short_url}', [LinkController::class, 'redirect'])
+//         ->name('link.redirect')
+//         ->where('short_url', '[a-zA-Z0-9]+');
+// });
+
+
+
 // Route::get('/{short_url}', [LinkController::class, 'redirect'])->name('links.redirect');
 
 // Route::get('/original/{short_url}', [LinkController::class, 'redirect'])->name('links.redirect');
