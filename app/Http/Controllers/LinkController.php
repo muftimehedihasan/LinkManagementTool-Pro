@@ -12,7 +12,8 @@ class LinkController extends Controller
     public function index()
     {
         // Paginate the links with 10 items per page
-        $links = Link::paginate(5);
+        // $links = Link::paginate(5);
+        $links = Link::orderBy('created_at', 'desc')->paginate(5);
         return view('dashboard', compact('links'));
     }
 
@@ -35,7 +36,7 @@ class LinkController extends Controller
 
         $link = Link::create([
             'destination_url' => $validatedData['destination_url'],
-            'short_url' => $validatedData['custom_url'] ?? substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 8),
+            'short_url' => $validatedData['custom_url'] ?? substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 8),
             'tags' => $validatedData['tags'],
             'user_id' => Auth::id(),
         ]);
@@ -53,16 +54,22 @@ class LinkController extends Controller
         return view('links.edit', compact('link'));
     }
 
-    public function update(Request $request, Link $link)
+    public function update(Request $request, $id)
     {
-        // Validate the incoming request
-        $request->validate(['original_url' => 'required|url']);
+        $request->validate([
+            'destination_url' => 'required|url',
+            'custom_url' => 'nullable|string|max:255',
+            'tags' => 'nullable|string|max:255',
+        ]);
 
-        // Update the link's original URL
-        $link->update(['original_url' => $request->original_url]);
+        $link = Link::findOrFail($id);
+        $link->destination_url = $request->destination_url;
+        $link->short_url = $request->custom_url ?? $link->short_url; // Update if provided
+        $link->tags = $request->tags;
+        $link->save();
 
-        // Redirect back to the index page with a success message
-        return redirect()->route('links.index')->with('success', 'Link updated successfully!');
+        return redirect()->route('dashboard')->with('success', 'Link updated successfully!');
+        // return redirect()->back()->with('success', 'Link updated successfully!');
     }
 
 
@@ -90,6 +97,26 @@ class LinkController extends Controller
         // Redirect to the destination URL
         return redirect()->to($link->destination_url);
     }
+
+
+
+    // public function redirect($short_url)
+    // {
+    //     // Remove the prefix from the short URL
+    //     $cleaned_short_url = str_replace('original-', '', $short_url);
+
+    //     // Find the link in the database
+    //     $link = Link::where('short_url', $cleaned_short_url)->firstOrFail();
+
+    //     // Log the destination URL for debugging
+    //     Log::info('Redirecting to URL: ' . $link->destination_url);
+
+    //     // Increment the click count
+    //     $link->increment('click_count');
+
+    //     // Redirect to the destination URL
+    //     return redirect()->to($link->destination_url);
+    // }
 
 
 

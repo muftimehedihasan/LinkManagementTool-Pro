@@ -12,7 +12,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
 
-    $links = Link::paginate(5); // Adjust per page count as needed
+    $links = Link::orderBy('created_at', 'desc')->paginate(5);
     return view('dashboard', compact('links'));
 
     // return view('dashboard');
@@ -29,6 +29,9 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/{short_url}', [LinkController::class, 'redirect'])->name('links.redirect');
+// Route::get('/original/{short_url}', [LinkController::class, 'redirect'])->name('links.redirect');
+
+
 
 
 
