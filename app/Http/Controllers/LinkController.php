@@ -22,30 +22,52 @@ class LinkController extends Controller
         return view('links.create');
     }
 
-
-
     // Method for Stor Data
 
+    // public function store(Request $request)
+    // {
+
+    //     $validatedData = $request->validate([
+    //         'destination_url' => 'required|url',
+    //         'custom_url' => 'nullable|string|unique:links,short_url',
+    //         'tags' => 'nullable|string',
+    //     ], [
+    //         'custom_url.unique' => 'The custom URL is already in use. Please choose a different one.',
+    //     ]);
+
+    //     $link = Link::create([
+    //         'destination_url' => $validatedData['destination_url'],
+    //         'short_url' => $validatedData['custom_url'] ?? substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 8),
+    //         'tags' => $validatedData['tags'],
+    //         'user_id' => Auth::id(),
+    //     ]);
+
+    //     return redirect()->route('links.index')->with('success', 'Link created successfully!');
+    // }
+
     public function store(Request $request)
-    {
+{
+    $validatedData = $request->validate([
+        'destination_url' => 'required|url',
+        'custom_url' => 'nullable|string|unique:links,short_url',
+        'tags' => 'nullable|string',
+    ], [
+        'custom_url.unique' => 'The custom URL is already in use. Please choose a different one.',
+    ]);
 
-        $validatedData = $request->validate([
-            'destination_url' => 'required|url',
-            'custom_url' => 'nullable|string|unique:links,short_url',
-            'tags' => 'nullable|string',
-        ], [
-            'custom_url.unique' => 'The custom URL is already in use. Please choose a different one.',
-        ]);
+    $link = Link::create([
+        'destination_url' => $validatedData['destination_url'],
+        'short_url' => $validatedData['custom_url'] ?? substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 6),
+        'tags' => $validatedData['tags'],
+        'user_id' => Auth::id(),
+    ]);
 
-        $link = Link::create([
-            'destination_url' => $validatedData['destination_url'],
-            'short_url' => $validatedData['custom_url'] ?? substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 8),
-            'tags' => $validatedData['tags'],
-            'user_id' => Auth::id(),
-        ]);
-
-        return redirect()->route('links.index')->with('success', 'Link created successfully!');
+    if ($request->expectsJson()) {
+        return response()->json(['message' => 'Link created successfully!', 'link' => $link], 201);
     }
+
+    return redirect()->route('dashboard')->with('success', 'Link created successfully!');
+}
 
 
 
