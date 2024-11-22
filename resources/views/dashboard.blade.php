@@ -151,10 +151,21 @@
                                         <!-- Edit Action -->
                                         <li>
                                         <!-- Modal toggle -->
-                                        <a href="{{ route('links.edit', $link->id) }}" data-modal-target="edit-modal" data-modal-toggle="edit-modal" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        <a href="{{ route('links.edit', $link->id) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                             Edit
                                         </a>
                                         </li>
+
+                                           {{-- <!-- Edit Action -->
+                                           <li>
+                                            <!-- Modal toggle -->
+                                            <a href="{{ route('links.edit', $link->id) }}" data-modal-target="edit-modal" data-modal-toggle="edit-modal" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                Edit
+                                            </a>
+                                            </li> --}}
+
+
+
                                     </ul>
                                     <!-- Delete Action -->
                                     <div class="py-1">
@@ -173,8 +184,8 @@
             </div>
 
 
-    <!-- Edit Main modal -->
-    @include('links.edit')
+    {{-- <!-- Edit Main modal -->
+    @include('links.edit') --}}
 
 
             <!-- Pagination Links -->
