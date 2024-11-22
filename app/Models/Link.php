@@ -20,7 +20,7 @@ class Link extends Model
             'destination_url' => $this->destination_url,
             'short_url' => $this->short_url,
             'tags' => $this->tags,
-            'email' => $this->email,
+            // 'email' => $this->email,
         ];
     }
 
