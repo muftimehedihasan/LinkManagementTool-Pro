@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RedirectController;
+use App\Http\Controllers\ExportController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,16 +32,14 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/search', [LinkController::class, 'search'])->name('links.search');
 
 
-
-
 Route::delete('/links/delete-all', [LinkController::class, 'deleteAll'])->name('links.deleteAll')->middleware(['auth', 'verified']);
 
-
-
-use App\Http\Controllers\RedirectController;
 
 Route::prefix('short')->group(function () {
     Route::get('/{custom_url}', [RedirectController::class, 'redirect'])->name('redirect');
 });
+
+Route::get('/export-csv', [ExportController::class, 'exportAsCSV'])->name('export.csv');
+
 
 require __DIR__.'/auth.php';
