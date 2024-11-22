@@ -8,6 +8,7 @@ A Laravel-based link management system that allows users to create, customize, a
 - **Destination URL Validation:** Ensures the provided destination URL is valid.
 - **Custom URL:** Option to create a personalized short URL.
 - **Tagging System:** Add tags to your links for easy categorization and search.
+- **search System:** Integration search system using Meilisearch and Laravel Scout.
 - **User Authentication:** Each user can manage their own links.
 - **Responsive Design:** Built with Tailwind CSS for a responsive and mobile-friendly interface.
 
