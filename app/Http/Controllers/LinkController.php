@@ -78,7 +78,6 @@ class LinkController extends Controller
 
 
 
-
     public function show($id)
 {
     $link = Link::findOrFail($id); // Retrieve the link by ID
@@ -127,10 +126,8 @@ class LinkController extends Controller
         $link->save();
 
         // Redirect to the dashboard with a success message
-        return redirect()->route('dashboard')->with('success', 'Link updated successfully!');
+        return redirect()->route('dashboard')->with('success', 'Updated successfully!');
     }
-
-
 
 
 
