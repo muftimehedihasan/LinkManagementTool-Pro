@@ -130,7 +130,21 @@
 
                         @foreach($links as $link)
                         <tr class="border-b dark:border-gray-700">
-                            <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ url($link->short_url) }}" target="_blank">{{ url($link->short_url) }}</a></th>
+                            {{-- <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <a href="{{ route('redirect', ['custom_url' => $link->short_url]) }}" 
+                                    class="text-blue-500 underline">
+                                     {{ url('short/' . $link->short_url) }}
+                                 </a>
+                            </th> --}}
+
+                            <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <a href="{{ route('redirect', ['custom_url' => $link->short_url]) }}" 
+                                   class="text-slate-500 no-underline hover:underline"
+                                   target="_blank" 
+                                   rel="noopener noreferrer">
+                                    {{ url('short/' . $link->short_url) }}
+                                </a>
+                            </th>
                             <td class="px-4 py-3">{{ $link->destination_url }}</td>
                             <td class="px-4 py-3">{{ $link->tags }}</td>
                             <td class="px-4 py-3">{{ $link->created_at->diffForHumans() }}</td>
