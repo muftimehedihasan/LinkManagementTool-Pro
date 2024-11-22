@@ -23,6 +23,7 @@ Follow these steps to get the application running locally.
 - Laravel 11.x
 - MySQL or SQLite (or any database supported by Laravel)
 - Node.js (for front-end dependencies)
+-  Meilisearch and Laravel Scout
 
 ### Setup
 
