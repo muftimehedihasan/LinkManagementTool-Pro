@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Link;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class ExportController extends Controller
@@ -11,7 +12,8 @@ class ExportController extends Controller
     public function exportAsCSV()
     {
         // Fetch data to export
-        $data = Link::all(); 
+        // $data = Link::all(); 
+        $data = Link::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
 
         // Define CSV file headers
         $csvHeaders = ['short_url', 'destination_url', 'tags'];
