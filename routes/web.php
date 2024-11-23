@@ -12,6 +12,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+use App\Http\Middleware\EnsureEmailIsVerified;
+
+Route::middleware(['auth', EnsureEmailIsVerified::class])->group(function () {
+    Route::get('/dashboard')->name('dashboard');
+    // Add other protected routes here
+});
+
+
 Route::get('/dashboard', function () {
     // Fetch links that belong to the authenticated user
     $links = Link::where('user_id', Auth::id())->orderBy('created_at', 'desc')->paginate(5);
