@@ -72,5 +72,19 @@ export default {
         },
     },
 
-    plugins: [forms, require('flowbite/plugin'), require('daisyui')],
+    // plugins: [forms, require('flowbite/plugin'), require('daisyui')],
+
+    plugins: [
+        forms,
+        require('flowbite/plugin')({
+          charts: true, // Enable Flowbite Charts integration
+        }),
+        require('daisyui'), // Include DaisyUI
+      ],
+      daisyui: {
+        themes: ['light', 'dark'], // DaisyUI themes (add or customize as needed)
+      },
+
+
+
 };
