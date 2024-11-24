@@ -46,8 +46,41 @@ class LinkController extends Controller
     /**
      * Store a newly created link in storage.
      */
+    // public function store(Request $request)
+    // {
+    //     $validatedData = $request->validate([
+    //         'destination_url' => 'required|url',
+    //         'custom_url' => 'nullable|string|unique:links,short_url',
+    //         'tags' => 'nullable|string',
+    //     ], [
+    //         'custom_url.unique' => 'The custom URL is already in use. Please choose a different one.',
+    //     ]);
+
+    //     $link = Link::create([
+    //         'destination_url' => $validatedData['destination_url'],
+    //         'short_url' => $validatedData['custom_url']
+    //             ?? substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 6),
+    //         'tags' => $validatedData['tags'],
+    //         'user_id' => Auth::id(),
+    //     ]);
+
+    //     if ($request->expectsJson()) {
+    //         return response()->json([
+    //             'message' => 'Link created successfully!',
+    //             'link' => $link
+    //         ], 201);
+    //     }
+
+    //     return redirect()
+    //         ->route('links.index')
+    //         ->with('success', 'Link created successfully!');
+    // }
+
+
     public function store(Request $request)
-    {
+{
+    try {
+        // Validate the request inputs
         $validatedData = $request->validate([
             'destination_url' => 'required|url',
             'custom_url' => 'nullable|string|unique:links,short_url',
@@ -56,39 +89,62 @@ class LinkController extends Controller
             'custom_url.unique' => 'The custom URL is already in use. Please choose a different one.',
         ]);
 
+        // Create the new link
         $link = Link::create([
             'destination_url' => $validatedData['destination_url'],
             'short_url' => $validatedData['custom_url']
-                ?? substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 6),
+                ?? substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 6), // Generate a random short URL
             'tags' => $validatedData['tags'],
             'user_id' => Auth::id(),
         ]);
 
+        // Handle JSON requests
         if ($request->expectsJson()) {
             return response()->json([
                 'message' => 'Link created successfully!',
-                'link' => $link
+                'link' => $link,
             ], 201);
         }
 
+        // Redirect to the link index with a success message
         return redirect()
-            ->route('dashboard')
+            ->route('links.index')
             ->with('success', 'Link created successfully!');
+    } catch (\Illuminate\Database\QueryException $e) {
+        // Check if the error is due to a unique constraint violation
+        if ($e->getCode() === '23000') {
+            return back()->withErrors([
+                'custom_url' => 'The custom URL is already in use. Please choose a different one.'
+            ])->withInput();
+        }
+
+        // For other database errors, show a generic error message
+        return back()->withErrors([
+            'error' => 'An error occurred while creating the link. Please try again.'
+        ])->withInput();
+    } catch (\Exception $e) {
+        // Handle general exceptions
+        return back()->withErrors([
+            'error' => 'Something went wrong. Please try again.'
+        ])->withInput();
     }
-
-
-
-    public function show($id)
-{
-    $link = Link::findOrFail($id); // Retrieve the link by ID
-
-    // Return the link details as JSON
-    return response()->json([
-        'success' => true,
-        'data' => $link,
-        'message' => 'Link retrieved successfully!',
-    ], 200);
 }
+
+
+
+
+
+//     public function show($id)
+// {
+//     $link = Link::findOrFail($id); // Retrieve the link by ID
+
+//     // Return the link details as JSON
+//     return response()->json([
+//         'success' => true,
+//         'data' => $link,
+//         'message' => 'Link retrieved successfully!',
+//     ], 200);
+// }
 
 
 
@@ -104,16 +160,43 @@ class LinkController extends Controller
         return view('links.edit', compact('link'));
     }
 
-    public function update(Request $request, $id)
-    {
-        // dd($id);
-        // Validate the request inputs
-        $request->validate([
-            'destination_url' => 'required|url',
-            'custom_url' => 'nullable|string|max:255',
-            'tags' => 'nullable|string|max:255',
-        ]);
+    // public function update(Request $request, $id)
+    // {
+    //     // dd($id);
+    //     // Validate the request inputs
+    //     $request->validate([
+    //         'destination_url' => 'required|url',
+    //         'custom_url' => 'nullable|string|max:255',
+    //         'tags' => 'nullable|string|max:255',
+    //     ]);
 
+    //     // Find the Link model by ID
+    //     $link = Link::findOrFail($id);
+
+    //     // Update the link's properties
+    //     $link->destination_url = $request->destination_url;
+    //     $link->short_url = $request->custom_url ?? $link->short_url; // Use provided custom URL or keep existing
+    //     $link->tags = $request->tags;
+
+    //     // Save the updated link to the database
+    //     $link->save();
+
+    //     // Redirect to the dashboard with a success message
+    //     return redirect()->route('links.index')->with('success', 'Updated successfully!');
+    // }
+
+
+
+    public function update(Request $request, $id)
+{
+    // Validate the request inputs
+    $request->validate([
+        'destination_url' => 'required|url',
+        'custom_url' => 'nullable|string|max:255',
+        'tags' => 'nullable|string|max:255',
+    ]);
+
+    try {
         // Find the Link model by ID
         $link = Link::findOrFail($id);
 
@@ -126,7 +209,22 @@ class LinkController extends Controller
         $link->save();
 
         // Redirect to the dashboard with a success message
-        return redirect()->route('dashboard')->with('success', 'Updated successfully!');
+        return redirect()->route('links.index')->with('success', 'Updated successfully!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Check if the error is due to a unique constraint violation
+            if ($e->getCode() === '23000') {
+                return back()->withErrors(['custom_url' => 'The custom URL is already in use. Please choose another one.'])
+                            ->withInput();
+            }
+
+            // For other database errors, show a generic error message
+            return back()->withErrors(['error' => 'An error occurred while updating the link. Please try again.'])
+                        ->withInput();
+        } catch (\Exception $e) {
+            // Handle general exceptions
+            return back()->withErrors(['error' => 'Something went wrong. Please try again.'])
+                        ->withInput();
+        }
     }
 
 

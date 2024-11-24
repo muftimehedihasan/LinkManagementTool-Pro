@@ -1,6 +1,3 @@
-Hello Link
-
-
 <x-app-layout>
 
 
@@ -30,6 +27,17 @@ Hello Link
      </div>
  </div>
 @endif
+
+{{-- @if(request()->has('success'))
+    <div class="p-4 text-sm text-green-800 bg-green-50 border border-green-200 rounded-lg">
+        {{ request('success') }}
+    </div>
+@endif --}}
+
+
+
+
+
 
             {{-- ///////////////////// --}}
         <!-- Start coding here -->
@@ -308,6 +316,7 @@ function editLink(linkId) {
     window.location.href = `/links/${linkId}/edit`;
 }
 
+// Create form
 
 document.getElementById('linkForm').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -339,10 +348,9 @@ document.getElementById('linkForm').addEventListener('submit', function (e) {
             return response.json();
         })
         .then(data => {
-            // Display success message
-            successContainer.classList.remove('hidden');
-            successContainer.innerHTML = `<p>${data.message}</p>`;
-            document.getElementById('linkForm').reset();
+            // Redirect to the links index with a success message
+            const redirectUrl = "{{ route('links.index') }}?success=Link created successfully!";
+            window.location.href = redirectUrl;
         })
         .catch(error => {
             // Display error messages
@@ -352,13 +360,16 @@ document.getElementById('linkForm').addEventListener('submit', function (e) {
                     errorContainer.innerHTML += `<p>${err}</p>`;
                 });
             } else {
-                errorContainer.innerHTML = `<p>${error.error || 'Something went wrong.'}</p>`;
+                errorContainer.innerHTML = `<p>${error.error || 'The custom URL is already in use. Please choose a different one.'}</p>`;
             }
         });
 });
 
 
+
 </script>
+
+
 
 
 

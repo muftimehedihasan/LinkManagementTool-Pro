@@ -4,7 +4,7 @@
 
     @include('layouts.sidebar')
 
-    <div class="flex items-center justify-center h-screen ml-28">
+    <div class="flex items-center justify-center h-screen ml-28 mt-8">
 
 
         <div class="max-w-3xl w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
@@ -67,9 +67,6 @@
               </div>
             </div>
           </div>
-
-
-
 
 </div>
 
@@ -157,3 +154,72 @@ if (document.getElementById("area-chart") && typeof ApexCharts !== 'undefined') 
 
 
 </script>
+
+
+
+
+
+
+
+{{-- <x-app-layout>
+    <div class="flex items-center justify-center h-screen">
+        <div class="max-w-3xl w-full bg-white rounded-lg shadow p-6">
+            <h5 class="text-3xl font-bold text-gray-900">Clicks Overview</h5>
+            <div id="area-chart"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const chartElement = document.getElementById("area-chart");
+
+            if (chartElement && typeof ApexCharts !== 'undefined') {
+                // Fetch data from Laravel API
+                fetch('{{ route('chart.data') }}')
+                    .then(response => response.json())
+                    .then(data => {
+                        const options = {
+                            chart: {
+                                height: "100%",
+                                maxWidth: "100%",
+                                type: "area",
+                                fontFamily: "Inter, sans-serif",
+                                toolbar: { show: false },
+                            },
+                            tooltip: { enabled: true },
+                            fill: {
+                                type: "gradient",
+                                gradient: {
+                                    opacityFrom: 0.55,
+                                    opacityTo: 0,
+                                    shade: "#1C64F2",
+                                    gradientToColors: ["#1C64F2"],
+                                },
+                            },
+                            dataLabels: { enabled: false },
+                            stroke: { width: 6 },
+                            grid: { show: false },
+                            series: [
+                                {
+                                    name: "Clicks",
+                                    data: data.series,
+                                    color: "#1A56DB",
+                                },
+                            ],
+                            xaxis: {
+                                categories: data.categories,
+                                labels: { show: true },
+                            },
+                            yaxis: { show: true },
+                        };
+
+                        const chart = new ApexCharts(chartElement, options);
+                        chart.render();
+                    })
+                    .catch(error => console.error("Error fetching chart data:", error));
+            }
+        });
+    </script>
+</x-app-layout> --}}
+
