@@ -18,10 +18,8 @@ class LinkController extends Controller
         // Perform search using Scout/Meilisearch
         $links = Link::search($query)->paginate(5);
 
-        return view('dashboard', compact('links', 'query'));
+        return view('links.index', compact('links', 'query'));
     }
-
-
 
     /**
      * Display a listing of the user's links.
@@ -129,9 +127,6 @@ class LinkController extends Controller
         ])->withInput();
     }
 }
-
-
-
 
 
 //     public function show($id)
