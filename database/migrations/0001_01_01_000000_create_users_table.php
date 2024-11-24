@@ -17,13 +17,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('otp')->nullable(); // Column for OTP
-            $table->timestamp('otp_expires_at')->nullable(); // Column for OTP expiration
-            $table->boolean('is_verified')->default(false); // Column to track email verification
             $table->rememberToken();
             $table->timestamps();
         });
-
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
