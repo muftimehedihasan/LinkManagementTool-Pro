@@ -28,16 +28,6 @@
  </div>
 @endif
 
-{{-- @if(request()->has('success'))
-    <div class="p-4 text-sm text-green-800 bg-green-50 border border-green-200 rounded-lg">
-        {{ request('success') }}
-    </div>
-@endif --}}
-
-
-
-
-
 
             {{-- ///////////////////// --}}
         <!-- Start coding here -->
@@ -124,95 +114,70 @@
                 </div>
             </div>
 
+            
             <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-4 py-3">Short Url</th>
-                            <th scope="col" class="px-4 py-3">Destination URL</th>
-                            <th scope="col" class="px-4 py-3">Tags</th>
-                            <th scope="col" class="px-4 py-3">Date</th>
-                            <th scope="col" class="px-4 py-3">Click</th>
-                            <th scope="col" class="px-4 py-3">
-                                <span class="sr-only">Actions</span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-4 py-3">Short Url</th>
+                <th scope="col" class="px-4 py-3">Destination URL</th>
+                <th scope="col" class="px-4 py-3">Tags</th>
+                <th scope="col" class="px-4 py-3">Date</th>
+                <th scope="col" class="px-4 py-3">Click</th>
+                <th scope="col" class="px-4 py-3">
+                    <span class="sr-only">Actions</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if($links->isEmpty())
+                <tr>
+                    <td colspan="6" class="px-4 py-3 text-center text-gray-500">
+                        <img src="{{ asset('images/no-data.jpg') }}" alt="No Data Found" class="inline-block mt-2 w-80 h-auto">
+                    </td>
+                </tr>
+            @else
+                @foreach($links as $link)
+                <tr class="border-b dark:border-gray-700">
+                    <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <a href="{{ route('redirect', ['custom_url' => $link->short_url]) }}"
+                           class="text-slate-500 no-underline hover:underline"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            {{ url('short/' . $link->short_url) }}
+                        </a>
+                    </th>
+                    <td class="px-4 py-3">{{ $link->destination_url }}</td>
+                    <td class="px-4 py-3">{{ $link->tags }}</td>
+                    <td class="px-4 py-3">{{ $link->created_at->diffForHumans() }}</td>
+                    <td class="px-4 py-3">{{ $link->click_count }}</td>
+                    <td class="px-4 py-3 flex items-center justify-end">
+                        <button id="{{ $link->short_url }}-button" data-dropdown-toggle="{{ $link->short_url }}-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
+                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                            </svg>
+                        </button>
+                        <div id="{{ $link->short_url }}-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                            <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="{{ $link->short_url }}-button">
+                                <li>
+                                    <a href="{{ route('links.edit', $link->id) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        Edit
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="py-1">
+                                <a href="#" onclick="deleteLink({{ $link->id }})" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+            @endif
+        </tbody>
+    </table>
+</div>
 
-                        @foreach($links as $link)
-                        <tr class="border-b dark:border-gray-700">
-                            {{-- <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="{{ route('redirect', ['custom_url' => $link->short_url]) }}"
-                                    class="text-blue-500 underline">
-                                     {{ url('short/' . $link->short_url) }}
-                                 </a>
-                            </th> --}}
-
-                            <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a href="{{ route('redirect', ['custom_url' => $link->short_url]) }}"
-                                   class="text-slate-500 no-underline hover:underline"
-                                   target="_blank"
-                                   rel="noopener noreferrer">
-                                    {{ url('short/' . $link->short_url) }}
-                                </a>
-                            </th>
-                            <td class="px-4 py-3">{{ $link->destination_url }}</td>
-                            <td class="px-4 py-3">{{ $link->tags }}</td>
-                            <td class="px-4 py-3">{{ $link->created_at->diffForHumans() }}</td>
-                            <td class="px-4 py-3">{{ $link->click_count }}</td>
-
-                            <td class="px-4 py-3 flex items-center justify-end">
-                                <button id="{{ $link->short_url }}-button" data-dropdown-toggle="{{ $link->short_url }}-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
-                                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                    </svg>
-                                </button>
-                                <div id="{{ $link->short_url }}-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="{{ $link->short_url }}-button">
-                                        <!-- Show Action -->
-                                        {{-- <li>
-                                            <a href="{{ route('links.show', $link->id) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
-                                        </li> --}}
-                                        <!-- Edit Action -->
-                                        <li>
-                                        <!-- Modal toggle -->
-                                        <a href="{{ route('links.edit', $link->id) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                            Edit
-                                        </a>
-                                        </li>
-
-                                           {{-- <!-- Edit Action -->
-                                           <li>
-                                            <!-- Modal toggle -->
-                                            <a href="{{ route('links.edit', $link->id) }}" data-modal-target="edit-modal" data-modal-toggle="edit-modal" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                                Edit
-                                            </a>
-                                            </li> --}}
-
-                                    </ul>
-                                    <!-- Delete Action -->
-                                    <div class="py-1">
-                                        <a href="#" onclick="deleteLink({{ $link->id }})" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-
-                        </tr>
-
-                        @endforeach
-                    </tbody>
-
-
-                </table>
-            </div>
-
-
-    {{-- <!-- Edit Main modal -->
-    @include('links.edit') --}}
-
-
-            <!-- Pagination Links -->
+                    <!-- Pagination Links -->
             <div class="p-4">
                 {{ $links->links('pagination::tailwind') }}
             </div>

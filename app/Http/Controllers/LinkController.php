@@ -91,7 +91,7 @@ class LinkController extends Controller
         $link = Link::create([
             'destination_url' => $validatedData['destination_url'],
             'short_url' => $validatedData['custom_url']
-                ?? substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 6), // Generate a random short URL
+                ?? substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 4), // Generate a random short URL
             'tags' => $validatedData['tags'],
             'user_id' => Auth::id(),
         ]);
