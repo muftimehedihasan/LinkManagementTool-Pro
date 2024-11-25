@@ -128,7 +128,7 @@
             @if($links->isEmpty())
                 <tr>
                     <td colspan="6" class="px-4 py-3 text-center text-gray-500">
-                        <img src="{{ asset('images/no-data.jpg') }}" alt="No Data Found" class="inline-block mt-2 w-80 h-auto">
+                        <img src="{{ asset('images/no-data-found.png') }}" alt="No Data Found" class="inline-block mt-2 w-90 h-auto">
                     </td>
                 </tr>
             @else
@@ -139,7 +139,7 @@
                            class="text-slate-500 no-underline hover:underline"
                            target="_blank"
                            rel="noopener noreferrer">
-                            {{ url('short/' . $link->short_url) }}
+                            {{ url('/' . $link->short_url) }}
                         </a>
                     </th>
                     <td class="px-4 py-3">{{ $link->destination_url }}</td>
