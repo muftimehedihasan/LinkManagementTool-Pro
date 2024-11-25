@@ -18,7 +18,7 @@ class LinkController extends Controller
         // Perform search using Scout/Meilisearch
         $links = Link::search($query)->paginate(5);
 
-        return view('links.index', compact('links', 'query'));
+         return view('links.index', compact('links', 'query'));
     }
 
     /**
