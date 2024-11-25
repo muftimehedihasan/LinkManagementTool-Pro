@@ -1,18 +1,24 @@
 <?php
-// app/Http/Controllers/ChartController.php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class ChartController extends Controller
 {
     public function getChartData(Request $request)
     {
         $range = $request->query('range', 'last7days'); // Default to 'last7days'
-    
+
         try {
+            // Ensure the user is authenticated
+            $user = Auth::user();
+            if (!$user) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+
             // Define date ranges
             switch ($range) {
                 case 'yesterday':
@@ -37,15 +43,16 @@ class ChartController extends Controller
                     $endDate = now();
                     break;
             }
-    
-            // Query data within the selected date range
+
+            // Query data within the selected date range for the authenticated user
             $data = DB::table('links')
                 ->selectRaw('DATE(updated_at) as date, SUM(click_count) as total_clicks')
+                ->where('user_id', $user->id) // Filter by authenticated user
                 ->whereBetween('updated_at', [$startDate, $endDate])
                 ->groupBy('date')
                 ->orderBy('date')
                 ->get();
-    
+
             return response()->json([
                 'dates' => $data->pluck('date')->map(fn($date) => date('d F', strtotime($date))),
                 'clicks' => $data->pluck('total_clicks'),
@@ -54,7 +61,4 @@ class ChartController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-    
 }
-
-
