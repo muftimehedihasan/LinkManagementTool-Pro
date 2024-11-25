@@ -61,7 +61,7 @@
 </button>
 
 <!-- Modal -->
-@include('create-mode')
+@include('create-modal')
 
 
                     <div class="flex items-center space-x-3 w-full md:w-auto">

@@ -1,62 +1,60 @@
 <?php
+// app/Http/Controllers/ChartController.php
 
 namespace App\Http\Controllers;
 
-use App\Models\Link;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ChartController extends Controller
 {
-    public function getChartData()
+    public function getChartData(Request $request)
     {
-        // Get data for the last 7 days
-        $endDate = Carbon::now();
-        $startDate = Carbon::now()->subDays(6);
-
-        $dailyClicks = Link::select(
-            DB::raw('DATE(created_at) as date'),
-            DB::raw('SUM(click_count) as total_clicks')
-        )
-        ->whereBetween('created_at', [$startDate, $endDate])
-        ->groupBy('date')
-        ->orderBy('date')
-        ->get();
-
-        // Calculate total clicks and percentage change
-        $totalClicks = $dailyClicks->sum('total_clicks');
-        $previousPeriodClicks = Link::whereBetween('created_at', [
-            $startDate->copy()->subDays(7),
-            $endDate->copy()->subDays(7)
-        ])->sum('click_count');
-
-        $percentageChange = $previousPeriodClicks > 0
-            ? (($totalClicks - $previousPeriodClicks) / $previousPeriodClicks) * 100
-            : 0;
-
-        // Prepare data for the chart
-        $dates = [];
-        $clicks = [];
-
-        // Initialize arrays with 0 for all dates
-        for ($i = 0; $i < 7; $i++) {
-            $date = $startDate->copy()->addDays($i)->format('d M');
-            $dates[] = $date;
-            $clicks[$date] = 0;
+        $range = $request->query('range', 'last7days'); // Default to 'last7days'
+    
+        try {
+            // Define date ranges
+            switch ($range) {
+                case 'yesterday':
+                    $startDate = now()->subDay()->startOfDay();
+                    $endDate = now()->subDay()->endOfDay();
+                    break;
+                case 'today':
+                    $startDate = now()->startOfDay();
+                    $endDate = now()->endOfDay();
+                    break;
+                case 'last30days':
+                    $startDate = now()->subDays(30);
+                    $endDate = now();
+                    break;
+                case 'last90days':
+                    $startDate = now()->subDays(90);
+                    $endDate = now();
+                    break;
+                case 'last7days':
+                default:
+                    $startDate = now()->subDays(7);
+                    $endDate = now();
+                    break;
+            }
+    
+            // Query data within the selected date range
+            $data = DB::table('links')
+                ->selectRaw('DATE(updated_at) as date, SUM(click_count) as total_clicks')
+                ->whereBetween('updated_at', [$startDate, $endDate])
+                ->groupBy('date')
+                ->orderBy('date')
+                ->get();
+    
+            return response()->json([
+                'dates' => $data->pluck('date')->map(fn($date) => date('d F', strtotime($date))),
+                'clicks' => $data->pluck('total_clicks'),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-
-        // Fill in actual data
-        foreach ($dailyClicks as $daily) {
-            $date = Carbon::parse($daily->date)->format('d M');
-            $clicks[$date] = $daily->total_clicks;
-        }
-
-        return response()->json([
-            'dates' => $dates,
-            'clicks' => array_values($clicks),
-            'total_clicks' => $totalClicks,
-            'percentage_change' => round($percentageChange, 1)
-        ]);
     }
+    
 }
+
+
