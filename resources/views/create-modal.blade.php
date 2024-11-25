@@ -1,4 +1,3 @@
-
 <div id="default-modal" tabindex="-1" aria-hidden="true"
     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
@@ -17,7 +16,8 @@
 
                     <!-- Destination URL Field -->
                     <div class="mb-6">
-                        <label for="destination_url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Destination  URL<span class="text-red-600">*</span></label>
+                        <label for="destination_url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Destination
+                            URL<span class="text-red-600">*</span></label>
                         <input type="url" name="destination_url" id="destination_url"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="https://example.com" required>
@@ -25,7 +25,8 @@
 
                     <!-- Custom URL Field -->
                     <div class="mb-6">
-                        <label for="custom_url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Custom URL (Optional)</label>
+                        <label for="custom_url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Custom URL
+                            (Optional)</label>
                         <input type="text" name="custom_url" id="custom_url"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Enter a custom short URL">

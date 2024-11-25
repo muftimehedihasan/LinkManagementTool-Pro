@@ -75,7 +75,60 @@ class LinkController extends Controller
     // }
 
 
-    public function store(Request $request)
+//     public function store(Request $request)
+// {
+//     try {
+//         // Validate the request inputs
+//         $validatedData = $request->validate([
+//             'destination_url' => 'required|url',
+//             'custom_url' => 'nullable|string|unique:links,short_url',
+//             'tags' => 'nullable|string',
+//         ], [
+//             'custom_url.unique' => 'The custom URL is already in use. Please choose a different one.',
+//         ]);
+
+//         // Create the new link
+//         $link = Link::create([
+//             'destination_url' => $validatedData['destination_url'],
+//             'short_url' => $validatedData['custom_url']
+//                 ?? substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 4), // Generate a random short URL
+//             'tags' => $validatedData['tags'],
+//             'user_id' => Auth::id(),
+//         ]);
+
+//         // Handle JSON requests
+//         if ($request->expectsJson()) {
+//             return response()->json([
+//                 'message' => 'Link created successfully!',
+//                 'link' => $link,
+//             ], 201);
+//         }
+
+//         // Redirect to the link index with a success message
+//         return redirect()
+//             ->route('links.index')
+//             ->with('success', 'Link created successfully!');
+//     } catch (\Illuminate\Database\QueryException $e) {
+//         // Check if the error is due to a unique constraint violation
+//         if ($e->getCode() === '23000') {
+//             return back()->withErrors([
+//                 'custom_url' => 'The custom URL is already in use. Please choose a different one.'
+//             ])->withInput();
+//         }
+
+//         // For other database errors, show a generic error message
+//         return back()->withErrors([
+//             'error' => 'An error occurred while creating the link. Please try again.'
+//         ])->withInput();
+//     } catch (\Exception $e) {
+//         // Handle general exceptions
+//         return back()->withErrors([
+//             'error' => 'Something went wrong. Please try again.'
+//         ])->withInput();
+//     }
+// }
+
+public function store(Request $request)
 {
     try {
         // Validate the request inputs
@@ -87,46 +140,43 @@ class LinkController extends Controller
             'custom_url.unique' => 'The custom URL is already in use. Please choose a different one.',
         ]);
 
+        // Generate the short URL
+        $shortUrl = $validatedData['custom_url']
+            ?? substr(hash('sha256', $validatedData['destination_url'] . microtime()), 0, 4); // Using a 4-character hash
+
         // Create the new link
         $link = Link::create([
             'destination_url' => $validatedData['destination_url'],
-            'short_url' => $validatedData['custom_url']
-                ?? substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 4), // Generate a random short URL
+            'short_url' => $shortUrl,
             'tags' => $validatedData['tags'],
             'user_id' => Auth::id(),
         ]);
 
-        // Handle JSON requests
-        if ($request->expectsJson()) {
-            return response()->json([
-                'message' => 'Link created successfully!',
-                'link' => $link,
-            ], 201);
-        }
+        // Return a JSON response for success
+        return response()->json([
+            'message' => 'Link created successfully!',
+            'link' => $link
+        ], 201);
 
-        // Redirect to the link index with a success message
-        return redirect()
-            ->route('links.index')
-            ->with('success', 'Link created successfully!');
     } catch (\Illuminate\Database\QueryException $e) {
-        // Check if the error is due to a unique constraint violation
+        // Handle database errors
         if ($e->getCode() === '23000') {
-            return back()->withErrors([
-                'custom_url' => 'The custom URL is already in use. Please choose a different one.'
-            ])->withInput();
+            return response()->json([
+                'error' => 'The custom URL is already in use. Please choose a different one.'
+            ], 400); // Return a bad request error with a specific message
         }
-
-        // For other database errors, show a generic error message
-        return back()->withErrors([
+        return response()->json([
             'error' => 'An error occurred while creating the link. Please try again.'
-        ])->withInput();
+        ], 500);
     } catch (\Exception $e) {
-        // Handle general exceptions
-        return back()->withErrors([
-            'error' => 'Something went wrong. Please try again.'
-        ])->withInput();
+        // Handle other exceptions
+        return response()->json([
+            'error' => 'The custom URL is already in use. Please choose a different one.'
+        ], 500);
     }
 }
+
+
 
 
 //     public function show($id)

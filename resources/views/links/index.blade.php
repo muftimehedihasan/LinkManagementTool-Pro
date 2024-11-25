@@ -281,6 +281,53 @@ function editLink(linkId) {
 
 // Create form
 
+// document.getElementById('linkForm').addEventListener('submit', function (e) {
+//     e.preventDefault();
+
+//     const formData = new FormData(this);
+//     const errorContainer = document.getElementById('errorContainer');
+//     const successContainer = document.getElementById('successContainer');
+
+//     // Clear previous messages
+//     errorContainer.classList.add('hidden');
+//     successContainer.classList.add('hidden');
+//     errorContainer.innerHTML = '';
+//     successContainer.innerHTML = '';
+
+//     fetch("{{ route('links.store') }}", {
+//         method: "POST",
+//         headers: {
+//             'X-CSRF-TOKEN': document.querySelector('input[name=_token]').value,
+//             'Accept': 'application/json',
+//         },
+//         body: formData,
+//     })
+//         .then(response => {
+//             if (!response.ok) {
+//                 return response.json().then(err => {
+//                     throw err;
+//                 });
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             // Redirect to the links index with a success message
+//             const redirectUrl = "{{ route('links.index') }}?success=Link created successfully!";
+//             window.location.href = redirectUrl;
+//         })
+//         .catch(error => {
+//             // Display error messages
+//             errorContainer.classList.remove('hidden');
+//             if (error.errors) {
+//                 Object.values(error.errors).forEach(err => {
+//                     errorContainer.innerHTML += `<p>${err}</p>`;
+//                 });
+//             } else {
+//                 errorContainer.innerHTML = `<p>${error.error || 'The custom URL is already in use. Please choose a different one.'}</p>`;
+//             }
+//         });
+// });
+
 document.getElementById('linkForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -302,31 +349,33 @@ document.getElementById('linkForm').addEventListener('submit', function (e) {
         },
         body: formData,
     })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(err => {
-                    throw err;
-                });
-            }
-            return response.json();
-        })
+        .then(response => response.json())  // Always parse JSON response
         .then(data => {
-            // Redirect to the links index with a success message
-            const redirectUrl = "{{ route('links.index') }}?success=Link created successfully!";
-            window.location.href = redirectUrl;
+            if (data.error) {
+                // If there is an error in the response
+                errorContainer.classList.remove('hidden');
+                errorContainer.innerHTML = `<p>${data.error}</p>`;
+            } else if (data.message) {
+                // If the success message exists in the response
+                successContainer.classList.remove('hidden');
+                successContainer.innerHTML = `<p>${data.message}</p>`;
+                // Optionally reset the form or redirect
+                document.getElementById('linkForm').reset();
+
+                // Optionally redirect after a short delay
+                setTimeout(() => {
+                    window.location.href = "{{ route('links.index') }}";
+                }, 2000);
+            }
         })
         .catch(error => {
-            // Display error messages
+            // If something goes wrong in fetching or parsing the response
             errorContainer.classList.remove('hidden');
-            if (error.errors) {
-                Object.values(error.errors).forEach(err => {
-                    errorContainer.innerHTML += `<p>${err}</p>`;
-                });
-            } else {
-                errorContainer.innerHTML = `<p>${error.error || 'The custom URL is already in use. Please choose a different one.z.'}</p>`;
-            }
+            errorContainer.innerHTML = `<p>The custom URL is already in use. Please choose a different one.</p>`;
         });
 });
+
+
 
 
 
