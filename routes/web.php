@@ -9,6 +9,7 @@ use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\ClickHistoryController;
+use App\Http\Controllers\DailyClickCountController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -56,6 +57,17 @@ Route::get('track-click/{shortUrl}', [ClickHistoryController::class, 'trackClick
 // Route to show click history
 Route::get('click-history/{shortUrl}', [ClickHistoryController::class, 'showClickHistory'])->name('click.history');
 
+
+
+
+Route::get('/links/{link}/click-histories', [ClickHistoryController::class, 'index'])->name('clickHistories.index');
+
+// routes/web.php
+
+
+
+Route::get('/links/{linkId}/daily-click-counts', [DailyClickCountController::class, 'index'])->name('daily-click-counts.index');
+Route::get('/daily-click-counts/{id}', [DailyClickCountController::class, 'show'])->name('daily-click-counts.show');
 
 
 

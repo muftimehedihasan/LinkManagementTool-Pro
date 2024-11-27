@@ -160,6 +160,16 @@
                                     </a>
                                 </li>
                             </ul>
+
+                            <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="{{ $link->short_url }}-button">
+                                <li>
+                                    <a href="{{ route('clickHistories.index', $link->id) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        Analytics
+                                    </a>
+                                </li>
+                            </ul>
+
+
                             <div class="py-1">
                                 <a href="#" onclick="deleteLink({{ $link->id }})" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
                             </div>

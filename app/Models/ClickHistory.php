@@ -9,15 +9,10 @@ class ClickHistory extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'link_id',
-        'user_id',
-        'ip_address',
-        'clicked_at',
-    ];
+    protected $fillable = ['link_id', 'user_id', 'ip_address', 'clicked_at'];
 
     /**
-     * Get the link associated with the click history.
+     * Define a belongs-to relationship with Link.
      */
     public function link()
     {
@@ -25,10 +20,18 @@ class ClickHistory extends Model
     }
 
     /**
-     * Get the user associated with the click history.
+     * Define a belongs-to relationship with User (optional).
      */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+// In ClickHistory.php
+protected $casts = [
+    'clicked_at' => 'datetime',
+];
+
+
+
 }

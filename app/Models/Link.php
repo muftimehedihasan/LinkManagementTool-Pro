@@ -2,27 +2,21 @@
 
 namespace App\Models;
 
-use Laravel\Scout\Searchable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Link extends Model
 {
-    use HasFactory, Searchable;
-    protected $fillable = ['user_id', 'destination_url', 'short_url', 'tags', 'click_count'];
+    use HasFactory;
 
+    protected $fillable = ['destination_url', 'short_url', 'tags', 'click_count', 'user_id'];
 
     /**
-     * Specify the searchable fields.
+     * Define a one-to-many relationship with ClickHistory.
      */
-    public function toSearchableArray()
+    public function clickHistories()
     {
-        return [
-            'destination_url' => $this->destination_url,
-            'short_url' => $this->short_url,
-            'tags' => $this->tags,
-            // 'email' => $this->email,
-        ];
+        return $this->hasMany(ClickHistory::class);
     }
 
 
@@ -32,5 +26,9 @@ class Link extends Model
     }
 
 
+    public function dailyClickCounts()
+    {
+        return $this->hasMany(DailyClickCount::class);
+    }
 
 }
