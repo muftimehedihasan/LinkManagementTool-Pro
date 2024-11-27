@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\ChartController;
+use App\Http\Controllers\ClickHistoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -46,6 +47,16 @@ Route::prefix('short')->group(function () {
 });
 
 Route::get('/export-csv', [ExportController::class, 'exportAsCSV'])->name('export.csv');
+
+
+
+// Route to track clicks
+Route::get('track-click/{shortUrl}', [ClickHistoryController::class, 'trackClick'])->name('track.click');
+
+// Route to show click history
+Route::get('click-history/{shortUrl}', [ClickHistoryController::class, 'showClickHistory'])->name('click.history');
+
+
 
 
 require __DIR__.'/auth.php';

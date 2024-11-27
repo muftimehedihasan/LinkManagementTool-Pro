@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Link extends Model
 {
-    use Searchable;
+    use HasFactory, Searchable;
     protected $fillable = ['user_id', 'destination_url', 'short_url', 'tags', 'click_count'];
 
 
