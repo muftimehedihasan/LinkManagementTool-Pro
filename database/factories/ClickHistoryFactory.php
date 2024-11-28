@@ -15,7 +15,7 @@ class ClickHistoryFactory extends Factory
     {
         return [
             'link_id' => Link::factory(), // Associate with a Link
-            'user_id' => User::factory(), // Optionally associate with a User
+            // 'user_id' => User::factory(), // Optionally associate with a User
             'ip_address' => $this->faker->ipv4(),
             'clicked_at' => $this->faker->dateTimeBetween('-30 days', 'now'),
         ];

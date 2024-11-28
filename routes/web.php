@@ -64,8 +64,6 @@ Route::get('/links/{link}/click-histories', [ClickHistoryController::class, 'ind
 
 // routes/web.php
 
-
-
 Route::get('/links/{linkId}/daily-click-counts', [DailyClickCountController::class, 'index'])->name('daily-click-counts.index');
 Route::get('/daily-click-counts/{id}', [DailyClickCountController::class, 'show'])->name('daily-click-counts.show');
 

@@ -68,7 +68,7 @@
             <th class="border px-4 py-2">#</th>
             <th class="border px-4 py-2">IP Address</th>
             <th class="border px-4 py-2">Clicked At</th>
-            <th class="border px-4 py-2">User</th>
+            {{-- <th class="border px-4 py-2">User</th> --}}
         </tr>
     </thead>
     <tbody>
@@ -77,7 +77,7 @@
                 <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                 <td class="border px-4 py-2">{{ $history->ip_address ?? 'N/A' }}</td>
                 <td class="border px-4 py-2">{{ $history->clicked_at ? $history->clicked_at->format('d M Y H:i') : 'N/A' }}</td>
-                <td class="border px-4 py-2">{{ $history->user->name ?? 'Guest' }}</td>
+                {{-- <td class="border px-4 py-2">{{ $history->user->name ?? 'Guest' }}</td> --}}
             </tr>
         @empty
             <tr>

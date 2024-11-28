@@ -21,11 +21,11 @@ class ClickHistory extends Model
 
     /**
      * Define a belongs-to relationship with User (optional).
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    //  */
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
 
 // In ClickHistory.php
 protected $casts = [
