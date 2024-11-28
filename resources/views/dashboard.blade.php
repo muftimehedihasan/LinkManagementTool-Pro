@@ -150,6 +150,52 @@
 
 
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const dropdownButton = document.getElementById('dropdownDefaultButton');
+        const dropdownMenu = document.getElementById('lastDaysdropdown');
+        const rangeOptions = document.querySelectorAll('.range-option');
+
+        // Toggle dropdown visibility
+        dropdownButton.addEventListener('click', () => {
+            const isHidden = dropdownMenu.classList.contains('hidden');
+            dropdownMenu.classList.toggle('hidden', !isHidden);
+        });
+
+        // Add active class to selected option and keep the dropdown visible
+        rangeOptions.forEach(option => {
+            option.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                // Remove active state from all options
+                rangeOptions.forEach(opt => opt.classList.remove('bg-gray-200', 'dark:bg-gray-600', 'text-white'));
+
+                // Add active state to clicked option
+                option.classList.add('bg-gray-200', 'dark:bg-gray-600', 'text-white');
+
+                // Update button text to show the selected range
+                dropdownButton.innerHTML = `
+                    ${option.textContent.trim()}
+                    <svg class="w-2.5 m-2.5 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                    </svg>
+                `;
+
+                // Fetch the data for the selected range (optional)
+                const range = option.dataset.range;
+                fetchChartData(range); // Assuming this function is already defined
+            });
+        });
+
+        // Close dropdown on outside click
+        document.addEventListener('click', (event) => {
+            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+    });
+</script>
+
 
 
 
