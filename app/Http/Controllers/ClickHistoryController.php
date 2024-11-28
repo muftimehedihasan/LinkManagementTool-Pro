@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Link;
 use App\Models\ClickHistory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use App\Models\DailyClickCount;
 use Illuminate\Support\Facades\DB;
 
 class ClickHistoryController extends Controller
@@ -25,7 +27,7 @@ class ClickHistoryController extends Controller
         // Step 1: Log the individual click
         ClickHistory::create([
             'link_id' => $linkId,
-            'user_id' => $userId,
+            // 'user_id' => $userId,
             'ip_address' => $ipAddress,
             'clicked_at' => now(),
         ]);
@@ -58,6 +60,39 @@ class ClickHistoryController extends Controller
 
     return view('click_histories.index', compact('link', 'dailyClickCounts'));
 }
+
+
+
+
+// method for chart indivusal link
+
+public function getChartData($link_id, Request $request)
+    {
+        // Fetch the date range from request
+        $range = $request->get('range', 'last7days');
+        $query = DailyClickCount::where('link_id', $link_id);
+
+        // Apply date filtering based on range
+        if ($range === 'today') {
+            $query->where('click_date', Carbon::today()->toDateString());
+        } elseif ($range === 'last7days') {
+            $query->where('click_date', '>=', Carbon::today()->subDays(7)->toDateString());
+        } elseif ($range === 'last30days') {
+            $query->where('click_date', '>=', Carbon::today()->subDays(30)->toDateString());
+        }
+
+        // Get data grouped by date
+        $data = $query->orderBy('click_date')->get();
+
+        // Prepare chart data
+        $chartData = [
+            'dates' => $data->pluck('click_date'),       // X-axis
+            'clicks' => $data->pluck('click_count'),    // Y-axis
+        ];
+
+        return response()->json($chartData);
+    }
+
 
 
 }

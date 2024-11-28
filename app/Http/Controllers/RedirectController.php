@@ -1,8 +1,12 @@
 <?php
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use id;
+use Carbon\Carbon;
 use App\Models\Link;
+use App\Models\ClickHistory;
+use Illuminate\Http\Request;
+use App\Models\DailyClickCount;
 
 class RedirectController extends Controller
 {
@@ -15,6 +19,12 @@ class RedirectController extends Controller
             // Increment the click count (if tracking clicks).
             $link->increment('click_count');
 
+            // Track click history
+            $this->storeClickHistory($link);
+
+            // Track daily click counts
+            $this->storeDailyClickCount($link);
+
             // Redirect to the destination URL.
             return redirect($link->destination_url);
         }
@@ -23,23 +33,46 @@ class RedirectController extends Controller
         return redirect('/')->with('error', 'Link not found!');
     }
 
+    /**
+     * Store the click history for each click.
+     *
+     * @param Link $link
+     */
+    protected function storeClickHistory(Link $link)
+    {
+        // Create a new click history record
+        ClickHistory::create([
+            'link_id' => $link->id,
+            // 'user_id' => auth()->check() ? auth()->id() : null,  // Store user ID if logged in, otherwise null
+            'ip_address' => request()->ip(),  // Store the IP address of the user
+            'clicked_at' => now(),
+        ]);
+    }
 
+    /**
+     * Store the daily click count for the link.
+     *
+     * @param Link $link
+     */
+    protected function storeDailyClickCount(Link $link)
+    {
+        $date = Carbon::today(); // Get the current date
 
-    // public function redirect($short_url)
-    // {
-    //     // Remove the prefix from the short URL
-    //     $cleaned_short_url = str_replace('original-', '', $short_url);
+        // Check if the click count for this link today already exists
+        $dailyClickCount = DailyClickCount::where('link_id', $link->id)
+            ->whereDate('click_date', $date)
+            ->first();
 
-    //     // Find the link in the database
-    //     $link = Link::where('short_url', $cleaned_short_url)->firstOrFail();
-
-    //     // Log the destination URL for debugging
-    //     // Log::info('Redirecting to URL: ' . $link->destination_url);
-
-    //     // Increment the click count
-    //     $link->increment('click_count');
-
-    //     // Redirect to the destination URL
-    //     return redirect()->to($link->destination_url);
-    // }
+        if ($dailyClickCount) {
+            // If the entry exists, increment the click count
+            $dailyClickCount->increment('click_count');
+        } else {
+            // Otherwise, create a new daily click count record
+            DailyClickCount::create([
+                'link_id' => $link->id,
+                'click_date' => $date,
+                'click_count' => 1,  // Set the initial click count to 1
+            ]);
+        }
+    }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('link_id')->constrained()->onDelete('cascade');
             $table->string('ip_address', 45)->nullable();
             $table->timestamp('clicked_at')->nullable();
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

@@ -41,4 +41,8 @@ class DailyClickCountController extends Controller
         // Return a view or JSON response (depending on your needs)
         return view('daily_click_counts.show', compact('dailyClickCount'));
     }
+
+
+
+
 }

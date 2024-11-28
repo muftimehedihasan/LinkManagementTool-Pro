@@ -58,8 +58,6 @@ Route::get('track-click/{shortUrl}', [ClickHistoryController::class, 'trackClick
 Route::get('click-history/{shortUrl}', [ClickHistoryController::class, 'showClickHistory'])->name('click.history');
 
 
-
-
 Route::get('/links/{link}/click-histories', [ClickHistoryController::class, 'index'])->name('clickHistories.index');
 
 // routes/web.php
@@ -67,6 +65,21 @@ Route::get('/links/{link}/click-histories', [ClickHistoryController::class, 'ind
 Route::get('/links/{linkId}/daily-click-counts', [DailyClickCountController::class, 'index'])->name('daily-click-counts.index');
 Route::get('/daily-click-counts/{id}', [DailyClickCountController::class, 'show'])->name('daily-click-counts.show');
 
+
+
+
+// use App\Http\Controllers\DailyClickController;
+
+Route::get('/chart-data/{link}', [ClickHistoryController::class, 'getChartData']);
+
+
+
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/user-clicks', [DailyClickCountController::class, 'getUserClicks']);
+});
 
 
 require __DIR__.'/auth.php';

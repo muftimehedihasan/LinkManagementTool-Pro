@@ -38,10 +38,14 @@
 </body>
 </html> --}}
 
-<h1>Click Histories for Link: {{ $link->short_url }}</h1>
+
+
+
+ <h1>Click Histories for Link: {{ $link->short_url }}</h1>
 
 <table class="table-auto border-collapse border border-gray-400 w-full">
     <thead>
+         <h2 class="mt-8 text-lg font-bold">Daily click counts</h2>
         <tr>
             <th class="border px-4 py-2">Date</th>
             <th class="border px-4 py-2">Clicks</th>
@@ -68,7 +72,7 @@
             <th class="border px-4 py-2">#</th>
             <th class="border px-4 py-2">IP Address</th>
             <th class="border px-4 py-2">Clicked At</th>
-            {{-- <th class="border px-4 py-2">User</th> --}}
+
         </tr>
     </thead>
     <tbody>
@@ -76,8 +80,15 @@
             <tr>
                 <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                 <td class="border px-4 py-2">{{ $history->ip_address ?? 'N/A' }}</td>
-                <td class="border px-4 py-2">{{ $history->clicked_at ? $history->clicked_at->format('d M Y H:i') : 'N/A' }}</td>
-                {{-- <td class="border px-4 py-2">{{ $history->user->name ?? 'Guest' }}</td> --}}
+
+
+                <td class="border px-4 py-2">
+                    @if ($history->clicked_at)
+                        {{ \Carbon\Carbon::parse($history->clicked_at)->format('d M Y H:i') }}
+                    @else
+                        N/A
+                    @endif
+                </td>
             </tr>
         @empty
             <tr>
@@ -86,3 +97,72 @@
         @endforelse
     </tbody>
 </table>
+
+
+
+
+{{-- <x-app-layout>
+    <input type="hidden" id="link-id" value="{{ $link->id }}" />
+
+    <div id="area-chart" class="mt-5"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        // JavaScript for the chart (as shown above)
+    </script>
+</x-app-layout>
+
+
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+    const chartContainer = document.getElementById("area-chart");
+    const rangeOptions = document.querySelectorAll(".range-option");
+    const linkId = 123; // Replace with the actual link_id
+
+    let chart;
+
+    const options = {
+        chart: { height: 350, type: "area", toolbar: { show: false } },
+        series: [],
+        xaxis: { categories: [] },
+        yaxis: { labels: { formatter: val => val.toFixed(0) } },
+    };
+
+    const fetchChartData = async (range) => {
+        try {
+            const response = await fetch(`/chart-data/${linkId}?range=${range}`);
+            const data = await response.json();
+
+            const updatedOptions = {
+                series: [{ name: "Clicks", data: data.clicks }],
+                xaxis: { categories: data.dates },
+            };
+
+            if (chart) {
+                chart.updateOptions(updatedOptions);
+            } else {
+                chart = new ApexCharts(chartContainer, { ...options, ...updatedOptions });
+                chart.render();
+            }
+        } catch (error) {
+            console.error("Error fetching chart data:", error);
+        }
+    };
+
+    // Event listeners for range options
+    rangeOptions.forEach(option => {
+        option.addEventListener("click", event => {
+            event.preventDefault();
+            const range = option.dataset.range;
+            fetchChartData(range);
+        });
+    });
+
+    // Load today's data by default
+    fetchChartData("today");
+});
+
+</script> --}}
