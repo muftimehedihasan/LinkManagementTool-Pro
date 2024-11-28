@@ -25,10 +25,6 @@ class RedirectController extends Controller
 
 
 
-
-
-
-
     // public function redirect($short_url)
     // {
     //     // Remove the prefix from the short URL
