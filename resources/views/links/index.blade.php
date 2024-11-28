@@ -139,7 +139,7 @@
                            class="text-slate-500 no-underline hover:underline"
                            target="_blank"
                            rel="noopener noreferrer">
-                            {{ url('/' . $link->short_url) }}
+                            {{ url('s/' . $link->short_url) }}
                         </a>
                     </th>
                     <td class="px-4 py-3">{{ $link->destination_url }}</td>

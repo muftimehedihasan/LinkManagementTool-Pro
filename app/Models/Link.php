@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Link extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
+
 
     protected $fillable = ['destination_url', 'short_url', 'tags', 'click_count', 'user_id'];
 

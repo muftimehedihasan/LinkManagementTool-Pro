@@ -43,7 +43,7 @@ Route::get('/search', [LinkController::class, 'search'])->name('links.search');
 Route::delete('/links/delete-all', [LinkController::class, 'deleteAll'])->name('links.deleteAll')->middleware(['auth', 'verified']);
 
 
-Route::prefix('short')->group(function () {
+Route::prefix('s')->group(function () {
     Route::get('/{custom_url}', [RedirectController::class, 'redirect'])->name('redirect');
 });
 
