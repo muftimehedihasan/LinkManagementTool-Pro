@@ -41,7 +41,65 @@
 
 
 
- <h1>Click Histories for Link: {{ $link->short_url }}</h1>
+
+ <h1 class="mt-30">Click Histories for Link: {{ $link->short_url }}</h1>
+
+
+<!-- ====== Table Section Start -->
+{{-- <section class="bg-white dark:bg-dark py-20 lg:py-[120px]">
+    <div class="container mx-auto">
+       <div class="flex flex-wrap -mx-4">
+          <div class="w-full px-4">
+             <div class="max-w-full overflow-x-auto">
+                <table class="w-full table-auto">
+                   <thead>
+                      <tr class="text-center bg-primary">
+                         <th
+                            class="w-1/6 min-w-[160px] border-l border-transparent py-4 px-3 text-lg font-medium text-white lg:py-7 lg:px-4"
+                            >
+                            Date
+                         </th>
+                         <th
+                            class="w-1/6 min-w-[160px] py-4 px-3 text-lg font-medium text-white lg:py-7 lg:px-4"
+                            >
+                            Clicks
+                         </th>
+
+                      </tr>
+                   </thead>
+                   <tbody>
+                      <tr>
+                         @forelse ($dailyClickCounts as $dailyCount)
+                         <td
+                            class="text-dark border-b border-l border-[#E8E8E8] bg-[#F3F6FF] dark:bg-dark-3 dark:border-dark dark:text-dark-7 py-5 px-2 text-center text-base font-medium"
+                            >
+                            {{ $dailyCount->click_date }}
+                         </td>
+                         <td
+                            class="text-dark border-b border-[#E8E8E8] bg-white dark:border-dark dark:bg-dark-2 dark:text-dark-7 py-5 px-2 text-center text-base font-medium"
+                            >
+                            {{ $dailyCount->click_count }}
+                         </td>
+
+                         @empty
+                         <tr>
+                             <td colspan="2" class="text-center py-4">No daily click counts available.</td>
+                         </tr>
+                     @endforelse
+                      </tr>
+
+
+                   </tbody>
+                </table>
+             </div>
+          </div>
+       </div>
+    </div>
+ </section>
+ <!-- ====== Table Section End --> --}}
+
+
+
 
 <table class="table-auto border-collapse border border-gray-400 w-full">
     <thead>
@@ -97,6 +155,37 @@
         @endforelse
     </tbody>
 </table>
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/tailgrids@2.2.2/plugin.min.js"></script>
+<link
+  href="https://cdn.jsdelivr.net/npm/tailgrids@2.2.2/assets/css/tailwind.min.css"
+  rel="stylesheet"
+/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
