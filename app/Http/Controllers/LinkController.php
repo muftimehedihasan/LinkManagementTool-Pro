@@ -286,19 +286,19 @@ public function store(Request $request)
         return response()->json(['success' => true]);
     }
 
-    public function redirect($short_url)
-    {
-        $link = Link::where('short_url', $short_url)->firstOrFail();
+    // public function redirect($short_url)
+    // {
+    //     $link = Link::where('short_url', $short_url)->firstOrFail();
 
-        // Log the destination URL for debugging
-        Log::info('Redirecting to URL: ' . $link->destination_url);
+    //     // Log the destination URL for debugging
+    //     Log::info('Redirecting to URL: ' . $link->destination_url);
 
-        // Increment the click count
-        $link->increment('click_count');
+    //     // Increment the click count
+    //     $link->increment('click_count');
 
-        // Redirect to the destination URL
-        return redirect()->to($link->destination_url);
-    }
+    //     // Redirect to the destination URL
+    //     return redirect()->to($link->destination_url);
+    // }
 
 
 
