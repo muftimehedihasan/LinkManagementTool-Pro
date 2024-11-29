@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LinkController;
 use App\Http\Controllers\Api\RedirectController;
+use App\Http\Controllers\Api\ChartController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -22,4 +23,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('s')->middleware('auth:sanctum')->group(function () {
     Route::get('/{custom_url}', [RedirectController::class, 'redirect'])->name('redirect');
+});
+
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/chart-data', [ChartController::class, 'getChartData'])->name('chart.data');
 });
